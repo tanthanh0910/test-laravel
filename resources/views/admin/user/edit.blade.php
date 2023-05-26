@@ -1,15 +1,3 @@
-@push('css')
-    <style>
-        /*.select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {*/
-        /*    width: 790px !important;*/
-        /*}*/
-        /*@media only screen and (max-width: 1440px) {*/
-        /*    .select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {*/
-        /*        width: 550px !important;*/
-        /*    }*/
-        /*}*/
-    </style>
-@endpush
 @extends('admin.layouts.app')
 @section('title', 'User')
 @section('content')
@@ -27,7 +15,9 @@
 
             <div class="d-flex justify-content-center">
                 <!-- Form add new admin -->
-                {{Form::open(['url' => route('admin.users.update', ['user' => $user->id]), 'method' => 'PUT', 'class' => 'form-add-admin'])}}
+                <form method="POST" action="{{ route('admin.users.update',$user->id) }}" class="form-add-admin">
+                    {{ csrf_field() }}
+                    @method('PUT')
                 <div class="mt-4 row gutter-40 justify-content-between">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -93,7 +83,11 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="label-bold" for="role">Role*</label><br>
-                            {{Form::select('role_id', \App\Models\User::rolesArr(), old('role_id', $user->role_id), ['id' => 'role','placeholder' => 'Role', 'class' => 'form-control big custom-select'])}}
+                            <select class="form-control big custom-select" name="role_id" id="role">
+                                @foreach(\App\Models\User::rolesArr() as $key => $role)
+                                    <option value="{{$key}}" @if (request()->get('role_id') == $key || $user->role_id == $key)  {{ 'selected' }} @endif>{{$role}}</option>
+                                @endforeach
+                            </select>
                             @include("admin.partial.error-field-v2", with(['column' => 'role_id']))
                         </div>
                     </div>
@@ -105,7 +99,7 @@
                         Save
                     </button>
                 </div>
-                {{Form::close()}}
+                </form>
             </div>
         </div>
     </div>
@@ -113,5 +107,4 @@
     <!-- End main content -->
 @endsection
 @push('scripts')
-    <script src="{{ asset('backend/admin/js/user/create.js') }}"></script>
 @endpush

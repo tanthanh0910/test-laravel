@@ -17,8 +17,6 @@ use Illuminate\Support\Facades\Log;
 class UserController extends Controller
 {
     private $userService;
-    private $outletService;
-    private $factoryService;
 
     public function __construct(
         UserServiceInterface    $userService
@@ -31,9 +29,10 @@ class UserController extends Controller
     {
         $query = $this->userService->getUsersQuery(['id', 'user_name', 'email', 'role_id', 'phone']);
         $query->orderBy('id', 'DESC')->filterIndexData($request);
+        $roles= User::rolesArr();
 
         $users = $query->paginate(config('constant.per_page'));
-        return view('admin.user.index', compact('users'));
+        return view('admin.user.index', compact('users','roles'));
 
     }
 
@@ -50,8 +49,7 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
-            $user = $this->userService->createUser($request->except(['password', 'password_confirmation']));
-            $this->userService->changeUserPassword($user, $request->input('password'));
+            $this->userService->createUser($request->except(['password_confirmation']));
 
         } catch (\Exception $e) {
             Log::info("USER | CREATE NEW: " . $e->getMessage());

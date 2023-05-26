@@ -74,7 +74,12 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="label-bold" for="role">Role*</label>
-                                        {{Form::select('role_id', \App\Models\User::rolesArr(), old('role_id', $user->role_id), ['id' => 'role','placeholder' => 'role', 'class' => 'form-control big custom-select', 'readonly' => true])}}
+{{--                                        {{Form::select('role_id', \App\Models\User::rolesArr(), old('role_id', $user->role_id), ['id' => 'role','placeholder' => 'role', 'class' => 'form-control big custom-select', 'readonly' => true])}}--}}
+                                        <select class="form-control big custom-select" name="role_id" id="role" disabled="true">
+                                            @foreach(\App\Models\User::rolesArr() as $key => $role)
+                                                <option value="{{$key}}" @if (request()->get('role_id') == $key || $user->role_id == $key)  {{ 'selected' }} @endif>{{$role}}</option>
+                                            @endforeach
+                                        </select>
                                         @include("admin.partial.error-field-v2", with(['column' => 'role_id']))
                                     </div>
                                 </div>

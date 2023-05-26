@@ -51,7 +51,7 @@
     <div id="google_translate_element"></div>
     <div class="auth h-100">
         <div class="card card-container form-mobile">
-            <form class="form-auth mt-4" method="post" spellcheck="false" autocomplete="on" action="{{ route('login') }}">
+            <form class="form-auth mt-4" method="post" spellcheck="false" autocomplete="on" action="{{ route('post-login') }}">
                 {{ csrf_field() }}
                 @include('admin.layouts.flash-message')
                 <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">

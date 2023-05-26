@@ -15,8 +15,8 @@ return [
         User::ROLE_ADMIN => [
             'admin.users.index',
             'admin.users.show',
-            'admin.users.create',
             'admin.users.edit',
+            'admin.users.update',
         ],
         User::ROLE_SALE => [
             'admin.users.index',

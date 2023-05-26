@@ -15,16 +15,9 @@
                     </div>
 
                     <div class="d-flex justify-content-center">
-{{--                        <input type="hidden" name="role_super_admin" value="{{\App\Models\User::ROLE_SUPER_ADMIN}}">--}}
-{{--                        <input type="hidden" name="role_admin" value="{{\App\Models\User::ROLE_ADMIN}}">--}}
-{{--                        <input type="hidden" name="role_outlet_staff"--}}
-{{--                               value="{{\App\Models\User::ROLE_OUTLET_STAFF}}">--}}
-{{--                        <input type="hidden" name="role_outlet_owner"--}}
-{{--                               value="{{\App\Models\User::ROLE_OUTLET_OWNER}}">--}}
-{{--                        <input type="hidden" name="role_factory_staff"--}}
-{{--                               value="{{\App\Models\User::ROLE_FACTORY_STAFF}}">--}}
                         <!-- Form add new admin -->
-                        {{Form::open(['url' => route('admin.users.store'), 'method' => 'POST', 'class' => 'form-add-admin'])}}
+                        <form method="POST" action="{{ route('admin.users.store') }}" class="form-add-admin">
+                            {{ csrf_field() }}
                         <div class="mt-4 row gutter-40 justify-content-between">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -90,7 +83,11 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="label-bold" for="role">Role*</label><br>
-                                    {{Form::select('role_id', \App\Models\User::rolesArr(), old('role_id'), ['id' => 'role','placeholder' => 'role', 'class' => 'form-control big custom-select'])}}
+                                    <select class="form-control big custom-select" name="role_id" id="role">
+                                        @foreach(\App\Models\User::rolesArr() as $key => $role)
+                                            <option value="{{$key}}" @if (request()->get('role_id') == $key) {{ 'selected' }} @endif>{{$role}}</option>
+                                        @endforeach
+                                    </select>
                                     @include("admin.partial.error-field-v2", with(['column' => 'role_id']))
                                 </div>
                             </div>
@@ -102,11 +99,10 @@
                                 Create
                             </button>
                         </div>
-                        {{Form::close()}}
+                        </form>
                     </div>
                 </div>
             </div>
-
             <!-- End main content -->
         </div>
     </div>

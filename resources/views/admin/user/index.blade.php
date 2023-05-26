@@ -17,7 +17,13 @@
                                style="min-width: 150px"/>
                     </div>
 
-                    {{Form::select('role_id', \App\Models\User::rolesArr(), request()->get('role_id'), ['id' => 'role','placeholder' => 'role', 'class' => 'form-control select-field ml-5'])}}
+{{--                    {{Form::select('role_id', \App\Models\User::rolesArr(), request()->get('role_id'), ['id' => 'role','placeholder' => 'role', 'class' => 'form-control select-field ml-5'])}}--}}
+                    <select class="form-control select-field ml-5" name="role_id" id="role">
+                        <option value="">--Please choose an option--</option>
+                        @foreach($roles as $key => $role)
+                        <option value="{{$key}}" @if (request()->get('role_id') == $key) {{ 'selected' }} @endif>{{$role}}</option>
+                        @endforeach
+                    </select>
 
                     <a style="height: 35px" type="button" class="btn btn-danger select-field"
                        href="{{route('admin.users.index')}}"><i

@@ -99,6 +99,7 @@ class UserService implements \App\Interfaces\UserServiceInterface
     public function createUser($data): User
     {
         $user = new User();
+        $data['password'] = Hash::make($data['password']);
         $user->fill($data)->save();
         return $user;
     }

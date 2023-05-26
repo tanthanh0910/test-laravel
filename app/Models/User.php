@@ -2,23 +2,34 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-/**
- * @property string $user_name
- * @property string $password
- * @property string $reset_password_code
- * @property string $email
- * @property string $full_name
- * @property int $role_id
- * @property string $phone
- * @property string $avatar
- * @property string $remember_token
- * @property int $created_at
- * @property int $updated_at
- */
 class User extends Authenticatable
 {
+    use HasApiTokens, HasFactory, Notifiable;
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     const ROLE_MANAGER = 99;
     const ROLE_ADMIN = 1;
     const ROLE_SALE = 2;
@@ -60,16 +71,6 @@ class User extends Authenticatable
         'email', 'full_name', 'role_id', 'outlet_id', 'factory_id', 'phone', 'avatar', 'is_active', 'remember_token', 'created_at', 'updated_at'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-
 
     /**
      * The attributes that should be mutated to dates.
@@ -79,19 +80,6 @@ class User extends Authenticatable
     protected $dates = [
         'created_at', 'updated_at'
     ];
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var boolean
-     */
-//    public $timestamps = false;
-
-    // Scopes...
-
-    // Functions ...
-
-    // Relations ...
 
 
     public function hasPermission($actionName): bool
